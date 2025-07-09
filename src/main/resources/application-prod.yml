@@ -15,8 +15,9 @@ spring:
         ds-mysql:
           # useUnicode=true，启用Unicode字符集传输，强制使用多字节编码（如UTF-8），避免ASCII编码导致非英文字符丢失
           # characterEncoding=UTF-8，明确指定客户端到服务器的字符编码为UTF-8，需满足：✅ 数据库表字段为UTF-8编码（如utf8mb4）✅ Java程序文件编码为UTF-8
+          # allowPublicKeyRetrieval=true，允许公钥检索，解决JDBC连接时因公钥不存在导致无法连接的问题
           # serverTimezone=Asia/Shanghai，设置时区，解决JDBC驱动与MySQL服务器时区不一致导致的时间偏差问题
-          url: jdbc:mysql://127.0.0.1:3306/javaapi_springboot?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          url: jdbc:mysql://127.0.0.1:3306/javaapi_springboot?useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
           username: root
           password: root
           driver-class-name: com.mysql.cj.jdbc.Driver
