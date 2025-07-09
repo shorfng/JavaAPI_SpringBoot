@@ -33,7 +33,7 @@ public class RequestLogAspect {
      * @return Object 目标方法的返回值
      * @throws Throwable 如果目标方法抛出异常，则重新抛出
      */
-    @Around("execution(* com.loto.moudle..*Controller.*(..))")
+    @Around("execution(* com.loto.module..*Controller.*(..))")
     public Object logRequest(ProceedingJoinPoint joinPoint) throws Throwable {
         // 获取方法签名并提取方法名
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
