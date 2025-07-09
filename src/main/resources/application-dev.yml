@@ -1,0 +1,92 @@
+server:
+  # 应用端口
+  port: 8090
+
+spring:
+  # 应用名称
+  application:
+    name: loto
+  # 数据库的连接
+  datasource:
+    dynamic:
+      primary: ds-mysql # 默认数据源
+      datasource:
+        # 默认数据源 - mysql
+        ds-mysql:
+          # useUnicode=true，启用Unicode字符集传输，强制使用多字节编码（如UTF-8），避免ASCII编码导致非英文字符丢失
+          # characterEncoding=UTF-8，明确指定客户端到服务器的字符编码为UTF-8，需满足：✅ 数据库表字段为UTF-8编码（如utf8mb4）✅ Java程序文件编码为UTF-8
+          # serverTimezone=Asia/Shanghai，设置时区，解决JDBC驱动与MySQL服务器时区不一致导致的时间偏差问题
+          url: jdbc:mysql://127.0.0.1:3306/javaapi_springboot?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+          username: root
+          password: root
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          # HikariCP 连接池配置
+          hikari:
+            maximum-pool-size: 10      # 连接池中允许的最大连接数
+            minimum-idle: 2            # 连接池中保持的最小空闲连接数
+            idle-timeout: 30000        # 空闲连接超时时间（毫秒）
+            max-lifetime: 1800000      # 连接的最大生命周期（毫秒）
+            connection-timeout: 30000  # 获取连接的超时时间（毫秒）
+        # 数据源 - Oracle
+        ds-oracle:
+          url: jdbc:oracle:thin:@IP地址:1521:实例名
+#          url: jdbc:oracle:thin:@//IP地址:1521/服务名
+          username: 用户名
+          password: 密码
+          driver-class-name: oracle.jdbc.OracleDriver
+          # HikariCP 连接池配置
+          hikari:
+            maximum-pool-size: 10      # 连接池中允许的最大连接数
+            minimum-idle: 2            # 连接池中保持的最小空闲连接数
+            idle-timeout: 30000        # 空闲连接超时时间（毫秒）
+            max-lifetime: 1800000      # 连接的最大生命周期（毫秒）
+            connection-timeout: 30000  # 获取连接的超时时间（毫秒）
+        # CMS数据源 - OceanBase-Oracle
+        cms-ds:
+          url: jdbc:oceanbase://IP地址:端口号/数据库名?
+            compatibleMode=oracle&
+            useUnicode=true&
+            characterEncoding=UTF-8&
+            serverTimezone=Asia/Shanghai
+          username: 用户名@租户名#集群名      # 格式：用户名@租户名#集群名
+          password: 密码
+          driver-class-name: com.oceanbase.jdbc.Driver
+          # HikariCP 连接池配置
+          hikari:
+            maximum-pool-size: 10      # 连接池中允许的最大连接数
+            minimum-idle: 2            # 连接池中保持的最小空闲连接数
+            idle-timeout: 30000        # 空闲连接超时时间（毫秒）
+            max-lifetime: 1800000      # 连接的最大生命周期（毫秒）
+            connection-timeout: 30000  # 获取连接的超时时间（毫秒）
+
+# MyBatis 配置
+mybatis:
+  # Mapper 文件的扫描路径
+  mapper-locations: classpath*:mapper/**/*.xml
+  # 实体类的扫描路径（扫描后，Mapper XML 的 resultType、parameterType、resultMap 等标签直接使用类名）
+  type-aliases-package: com.loto.module
+  # 配置 MyBatis 的全局参数
+  configuration:
+    #  开启驼峰命名法
+    map-underscore-to-camel-case: true
+    #  开启日志输出
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# 日志配置，开发环境（dev）
+logging:
+  level:
+    root: INFO
+    # 只对你关心的业务模块开启 DEBUG
+    com.loto.module.user.mapper: DEBUG
+    # 第三方组件保持 INFO
+    org.apache.ibatis: INFO
+    org.springframework: INFO
+    com.baomidou: INFO
+
+# 跨域配置 - 白名单
+cors:
+  allowed-origins:
+    # 前端服务
+    - http://localhost:8080
+    # 接口服务
+    - http://localhost:8080
