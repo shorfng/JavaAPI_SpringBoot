@@ -62,19 +62,21 @@ spring:
 
 # springdoc-openapi项目配置
 springdoc:
+  # Swagger UI 基础配置
   swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
+    tags-sorter: alpha            # API分组排序（alpha-按字母排序）
+    operations-sorter: alpha      # 接口方法排序（alpha-按字母排序、method-按方法名排序）
+  # API文档全局信息
   api-docs:
-    path: /v3/api-docs
+    path: /v3/api-docs            # JSON文档访问路径
+  # 分组配置
   group-configs:
-    - group: '开发环境'
-      paths-to-match: '/**'
-      packages-to-scan: com.loto
-# knife4j的增强配置，不需要增强可以不配
+    - group: '开发环境'            # 分组名称
+      paths-to-match: '/**'       # API分组匹配路径
+      packages-to-scan: com.loto  # API分组扫描路径
+# knife4j 增强配置
 knife4j:
-  enable: true
+  enable: true        # 是否启用 knife4j
   setting:
     language: zh_cn
 
