@@ -130,8 +130,8 @@
             <version>3.5.5</version>
         </dependency>
 
-        <!-- swagger 3 版本兼容 Spring Boot 2.7.x -->
-        <!-- 去除swagger-ui，在ApiFox中使用http://ip:port/v3/api-docs -->
+        <!-- springdoc-openapi,兼容OpenAPI3规范，兼容 Spring Boot 2.7.x -->
+        <!-- 去除swagger-ui，在ApiFox中使用 http://ip:port/v3/api-docs -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
@@ -142,6 +142,13 @@
                     <groupId>org.webjars</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <!-- Knife4j 网页版：http://ip:port/doc.html -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+            <version>4.5.0</version>
         </dependency>
 
         <!-- 测试用 -->
