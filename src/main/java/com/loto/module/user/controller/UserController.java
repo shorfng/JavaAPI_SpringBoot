@@ -1,5 +1,6 @@
 package com.loto.module.user.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.loto.common.response.ResponseResult;
 import com.loto.module.user.domain.User;
 import com.loto.module.user.service.IUserService;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -42,6 +44,26 @@ public class UserController {
             return ResponseResult.success(list);
         } catch (Exception e) {
             logger.error("查询全部用户信息列表失败", e);
+            return ResponseResult.failure(60001, "业务异常");
+        }
+    }
+
+    /**
+     * 用户管理 - 分页查询用户信息列表
+     * @param pageNum  当前页码（默认第1页）
+     * @param pageSize 每页显示数量（默认10条）
+     * @return 分页数据
+     */
+    @GetMapping("/page")
+    @Operation(summary = "分页查询用户信息列表")
+    public ResponseResult<IPage<User>> getUserPage(
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "10") int pageSize) {
+        try {
+            IPage<User> page = userService.getUserPage(pageNum, pageSize);
+            return ResponseResult.success(page);
+        } catch (Exception e) {
+            logger.error("分页查询用户信息列表失败", e);
             return ResponseResult.failure(60001, "业务异常");
         }
     }

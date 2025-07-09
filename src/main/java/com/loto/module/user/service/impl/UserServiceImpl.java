@@ -1,5 +1,7 @@
 package com.loto.module.user.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.loto.module.user.domain.User;
 import com.loto.module.user.mapper.IUserMapper;
@@ -26,5 +28,14 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User> implements I
     @Override
     public List<User> getUserList() {
         return this.list();
+    }
+
+    /**
+     * 用户管理 - 分页查询用户信息列表
+     */
+    @Override
+    public IPage<User> getUserPage(int pageNum, int pageSize) {
+        Page<User> page = new Page<>(pageNum, pageSize);
+        return this.page(page);
     }
 }
