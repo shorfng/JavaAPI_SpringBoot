@@ -1,0 +1,88 @@
+CREATE TABLE t_user
+(
+    -- 主键字段
+    C_ID          VARCHAR2(36) PRIMARY KEY,
+
+    -- 字符串类型字段
+    C_USERNAME    VARCHAR2(50)                   NOT NULL,
+    C_PASSWORD    VARCHAR2(100)                  NOT NULL,
+    C_EMAIL       VARCHAR2(100),
+    C_PHONE       VARCHAR2(20),
+    C_ADDRESS     CLOB,
+    C_DESCRIPTION VARCHAR2(4000),
+    C_FULL_NAME   CHAR(100),
+
+    -- 数值类型字段
+    C_AGE         NUMBER(3),
+    C_HEIGHT      BINARY_FLOAT,
+    C_WEIGHT      BINARY_DOUBLE,
+    C_SALARY      NUMBER(10, 2),
+    C_LOGIN_COUNT NUMBER    DEFAULT 0,
+    C_BIG_NUMBER  NUMBER(20),
+
+    -- 日期时间类型字段
+    C_BIRTHDAY    DATE,
+    C_LOGIN_TIME  TIMESTAMP,
+    C_LAST_ACTIVE TIMESTAMP WITH TIME ZONE,
+    C_YEAR        NUMBER(4),
+
+    -- 二进制类型字段
+    C_AVATAR      BLOB,
+    C_SIGNATURE   BFILE                          NULL,
+
+    -- 枚举和集合类型(在Oracle中通常用VARCHAR2或检查约束实现)
+    C_GENDER      VARCHAR2(10) CHECK (C_GENDER IN ('MALE', 'FEMALE', 'OTHER')),
+    C_HOBBIES     VARCHAR2(100), -- 用逗号分隔的字符串模拟SET
+
+    -- 布尔类型(在Oracle中通常用NUMBER(1)实现)
+    C_IS_ACTIVE   NUMBER(1) DEFAULT 1 CHECK (C_IS_ACTIVE IN (0, 1)),
+
+    -- JSON类型(Oracle 12c及以上版本支持)
+--     C_EXTRA_INFO  CLOB CHECK (C_EXTRA_INFO IS JSON),
+
+    -- 系统字段
+    C_CREATE_TIME TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
+    C_CREATE_USER VARCHAR2(50)                   NOT NULL,
+    C_UPDATE_TIME TIMESTAMP,
+    C_UPDATE_USER VARCHAR2(50),
+    C_VERSION     NUMBER    DEFAULT 1,
+    C_IS_DELETED  NUMBER(1) DEFAULT 0 CHECK (C_IS_DELETED IN (0, 1)),
+
+    -- 注释(单独添加)
+    CONSTRAINT chk_hobbies CHECK (REGEXP_LIKE(C_HOBBIES,'^(READING|SPORTS|MUSIC|TRAVEL)(,(READING|SPORTS|MUSIC|TRAVEL))*$'))
+);
+
+-- 添加表注释
+COMMENT ON TABLE t_user IS '用户表';
+
+-- 添加列注释
+COMMENT ON COLUMN t_user.C_ID IS 'UUID主键';
+COMMENT ON COLUMN t_user.C_USERNAME IS '用户名';
+COMMENT ON COLUMN t_user.C_PASSWORD IS '密码';
+COMMENT ON COLUMN t_user.C_EMAIL IS '电子邮件';
+COMMENT ON COLUMN t_user.C_PHONE IS '电话号码';
+COMMENT ON COLUMN t_user.C_ADDRESS IS '地址(长文本)';
+COMMENT ON COLUMN t_user.C_DESCRIPTION IS '简短描述';
+COMMENT ON COLUMN t_user.C_FULL_NAME IS '全名(定长字符串)';
+COMMENT ON COLUMN t_user.C_AGE IS '年龄';
+COMMENT ON COLUMN t_user.C_HEIGHT IS '身高(米)';
+COMMENT ON COLUMN t_user.C_WEIGHT IS '体重(千克)';
+COMMENT ON COLUMN t_user.C_SALARY IS '薪水';
+COMMENT ON COLUMN t_user.C_LOGIN_COUNT IS '登录次数';
+COMMENT ON COLUMN t_user.C_BIG_NUMBER IS '大整数';
+COMMENT ON COLUMN t_user.C_BIRTHDAY IS '生日';
+COMMENT ON COLUMN t_user.C_LOGIN_TIME IS '最后登录时间';
+COMMENT ON COLUMN t_user.C_LAST_ACTIVE IS '最后活跃时间戳';
+COMMENT ON COLUMN t_user.C_YEAR IS '入职年份';
+COMMENT ON COLUMN t_user.C_AVATAR IS '头像图片';
+COMMENT ON COLUMN t_user.C_SIGNATURE IS '电子签名';
+COMMENT ON COLUMN t_user.C_GENDER IS '性别';
+COMMENT ON COLUMN t_user.C_HOBBIES IS '兴趣爱好';
+COMMENT ON COLUMN t_user.C_IS_ACTIVE IS '是否活跃';
+-- COMMENT ON COLUMN t_user.C_EXTRA_INFO IS '额外信息(JSON格式)';
+COMMENT ON COLUMN t_user.C_CREATE_TIME IS '创建时间';
+COMMENT ON COLUMN t_user.C_CREATE_USER IS '创建人';
+COMMENT ON COLUMN t_user.C_UPDATE_TIME IS '修改时间';
+COMMENT ON COLUMN t_user.C_UPDATE_USER IS '修改人';
+COMMENT ON COLUMN t_user.C_VERSION IS '版本号(用于乐观锁)';
+COMMENT ON COLUMN t_user.C_IS_DELETED IS '是否删除(0-未删除,1-已删除)';
