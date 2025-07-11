@@ -52,6 +52,7 @@ public class UserController {
 
     /**
      * 用户管理 - 分页查询用户信息列表
+     *
      * @param pageNum  当前页码（默认第1页）
      * @param pageSize 每页显示数量（默认10条）
      * @return 分页数据
@@ -81,6 +82,26 @@ public class UserController {
             return ResponseResult.success(list);
         } catch (Exception e) {
             logger.error("根据条件查询用户信息列表失败", e);
+            return ResponseResult.failure(60001, "业务异常");
+        }
+    }
+
+    /**
+     * 用户管理 - 根据条件分页查询用户信息列表（排序）
+     */
+    @PostMapping("/pageByCondition")
+    @Operation(summary = "根据条件分页查询用户信息列表（排序）")
+    public ResponseResult<IPage<User>> getUserPageByCondition(
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "10") int pageSize,
+            @RequestParam String orderName,
+            @RequestParam String orderValue,
+            @RequestBody User user) {
+        try {
+            IPage<User> page = userService.getUserPageByCondition(pageNum, pageSize, orderName, orderValue, user);
+            return ResponseResult.success(page);
+        } catch (Exception e) {
+            logger.error("根据条件分页查询用户信息列表（排序）失败", e);
             return ResponseResult.failure(60001, "业务异常");
         }
     }

@@ -47,4 +47,18 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User> implements I
     public List<User> getUserListByCondition(User user) {
         return this.list(new QueryWrapper<>(user));
     }
+
+    /**
+     * 用户管理 - 条件分页查询用户信息列表（排序）
+     */
+    @Override
+    public IPage<User> getUserPageByCondition(int pageNum, int pageSize, String orderName, String orderValue, User user) {
+        Page<User> page = new Page<>(pageNum, pageSize);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>(user);
+        // 动态添加排序条件：如果orderValue="asc"升序，否则降序
+        if (orderName != null && !orderName.isEmpty()) {
+            queryWrapper.orderBy(true, "asc".equalsIgnoreCase(orderValue), orderName);
+        }
+        return baseMapper.selectPage(page, queryWrapper); // 调用 MyBatis Plus 内置分页方法
+    }
 }

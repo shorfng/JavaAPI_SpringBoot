@@ -27,4 +27,9 @@ public interface IUserService extends IService<User> {
      * 用户管理 - 根据条件查询用户信息列表
      */
     List<User> getUserListByCondition(User user);
+
+    /**
+     * 用户管理 - 根据条件分页查询用户信息列表（排序）
+     */
+    IPage<User> getUserPageByCondition(int pageNum, int pageSize, String orderName, String orderValue, User user);
 }
