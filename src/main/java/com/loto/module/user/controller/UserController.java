@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,6 +66,21 @@ public class UserController {
             return ResponseResult.success(page);
         } catch (Exception e) {
             logger.error("分页查询用户信息列表失败", e);
+            return ResponseResult.failure(60001, "业务异常");
+        }
+    }
+
+    /**
+     * 用户管理 - 根据条件查询用户信息列表
+     */
+    @PostMapping("/listByCondition")
+    @Operation(summary = "根据条件查询用户信息列表")
+    public ResponseResult<List<User>> getUserListByCondition(@RequestBody User user) {
+        try {
+            List<User> list = userService.getUserListByCondition(user);
+            return ResponseResult.success(list);
+        } catch (Exception e) {
+            logger.error("根据条件查询用户信息列表失败", e);
             return ResponseResult.failure(60001, "业务异常");
         }
     }

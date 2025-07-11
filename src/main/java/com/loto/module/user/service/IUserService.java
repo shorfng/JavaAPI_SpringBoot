@@ -22,4 +22,9 @@ public interface IUserService extends IService<User> {
      * 用户管理 - 分页查询用户信息列表
      */
     IPage<User> getUserPage(int pageNum, int pageSize);
+
+    /**
+     * 用户管理 - 根据条件查询用户信息列表
+     */
+    List<User> getUserListByCondition(User user);
 }
