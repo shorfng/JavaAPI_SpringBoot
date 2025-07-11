@@ -131,7 +131,7 @@
         </dependency>
 
         <!-- springdoc-openapi,兼容OpenAPI3规范，兼容 Spring Boot 2.7.x -->
-        <!-- 去除swagger-ui，在ApiFox中使用 http://ip:port/v3/api-docs -->
+        <!-- 去除swagger-ui，在ApiFox中使用 http://localhost:8090/v3/api-docs -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
