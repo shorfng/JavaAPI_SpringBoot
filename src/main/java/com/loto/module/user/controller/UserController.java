@@ -121,4 +121,19 @@ public class UserController {
             return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
         }
     }
+
+    /**
+     * 用户管理 - 批量新增或修改用户信息
+     */
+    @PostMapping("/addOrUpdateBatch")
+    @Operation(summary = "批量新增或修改用户信息")
+    public ResponseResult<String> addOrUpdateUserBatch(@RequestBody List<User> userList) {
+        try {
+            String isSuccess = String.valueOf(userService.saveOrUpdateBatch(userList));
+            return ResponseResult.success(isSuccess, "保存成功");
+        } catch (Exception e) {
+            logger.error("批量新增或修改用户信息失败", e);
+            return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
+        }
+    }
 }
