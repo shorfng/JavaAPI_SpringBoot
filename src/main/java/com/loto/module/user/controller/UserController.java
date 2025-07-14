@@ -9,7 +9,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -133,6 +135,27 @@ public class UserController {
             return ResponseResult.success(isSuccess, "保存成功");
         } catch (Exception e) {
             logger.error("批量新增或修改用户信息失败", e);
+            return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
+        }
+    }
+
+    /**
+     * 用户管理 - 删除用户信息
+     */
+    @DeleteMapping("/delete/{cId}")
+    @Operation(summary = "删除用户信息")
+    public ResponseResult<String> deleteUser(@PathVariable String cId) {
+        try {
+            // 1、先查询是否存在（幂等验证）
+            User userInfo = userService.getById(cId);
+            if (userInfo == null) {
+                return ResponseResult.failure(ResultEnum.NOT_FOUND.getCode(), "用户不存在");
+            }
+            // 2、删除
+            String isSuccess = String.valueOf(userService.removeById(cId));
+            return ResponseResult.success(isSuccess, "删除成功");
+        } catch (Exception e) {
+            logger.error("删除用户信息失败", e);
             return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
         }
     }
