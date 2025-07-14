@@ -8,6 +8,7 @@ import com.loto.module.user.dto.UserDTO;
 import com.loto.module.user.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,14 +31,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user")
 @Tag(name = "用户管理")
+@RequiredArgsConstructor
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
     private final IUserService userService;
-
-    public UserController(IUserService userService) {
-        this.userService = userService;
-    }
 
     /**
      * 用户管理 - 查询全部用户信息列表
