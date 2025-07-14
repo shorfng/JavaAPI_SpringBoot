@@ -116,6 +116,11 @@ public class UserController {
     @Operation(summary = "新增或修改用户信息")
     public ResponseResult<String> addOrUpdateUser(@RequestBody User user) {
         try {
+            // 1、参数验证
+            if (user == null) {
+                return ResponseResult.failure(ResultEnum.BAD_REQUEST.getCode(), "参数不能为空");
+            }
+            // 2、新增或修改
             String isSuccess = String.valueOf(userService.saveOrUpdate(user));
             return ResponseResult.success(isSuccess, "保存成功");
         } catch (Exception e) {
@@ -131,6 +136,11 @@ public class UserController {
     @Operation(summary = "批量新增或修改用户信息")
     public ResponseResult<String> addOrUpdateUserBatch(@RequestBody List<User> userList) {
         try {
+            // 1、参数验证
+            if (userList == null || userList.isEmpty()) {
+                return ResponseResult.failure(ResultEnum.BAD_REQUEST.getCode(), "参数不能为空");
+            }
+            // 2、新增或修改
             String isSuccess = String.valueOf(userService.saveOrUpdateBatch(userList));
             return ResponseResult.success(isSuccess, "保存成功");
         } catch (Exception e) {
@@ -146,12 +156,16 @@ public class UserController {
     @Operation(summary = "删除用户信息")
     public ResponseResult<String> deleteUser(@PathVariable String cId) {
         try {
-            // 1、先查询是否存在（幂等验证）
+            // 1、参数验证
+            if (cId == null || cId.isEmpty()) {
+                return ResponseResult.failure(ResultEnum.BAD_REQUEST.getCode(), "参数不能为空");
+            }
+            // 2、先查询是否存在（幂等验证）
             User userInfo = userService.getById(cId);
             if (userInfo == null) {
                 return ResponseResult.failure(ResultEnum.NOT_FOUND.getCode(), "用户不存在");
             }
-            // 2、删除
+            // 3、删除
             String isSuccess = String.valueOf(userService.removeById(cId));
             return ResponseResult.success(isSuccess, "删除成功");
         } catch (Exception e) {
@@ -167,12 +181,16 @@ public class UserController {
     @Operation(summary = "批量删除用户信息")
     public ResponseResult<String> deleteUserBatch(@RequestBody List<String> cIdList) {
         try {
-            // 1、先查询是否存在（幂等验证）
+            // 1、参数验证
+            if (cIdList == null || cIdList.isEmpty()) {
+                return ResponseResult.failure(ResultEnum.BAD_REQUEST.getCode(), "参数不能为空");
+            }
+            // 2、先查询是否存在（幂等验证）
             List<User> userList = userService.listByIds(cIdList);
             if (userList.size() != cIdList.size()) {
                 return ResponseResult.failure(ResultEnum.NOT_FOUND.getCode(), "用户不存在");
             }
-            // 2、删除
+            // 3、删除
             String isSuccess = String.valueOf(userService.removeByIds(cIdList));
             return ResponseResult.success(isSuccess, "删除成功");
         } catch (Exception e) {
