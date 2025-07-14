@@ -159,4 +159,25 @@ public class UserController {
             return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
         }
     }
+
+    /**
+     * 用户管理 - 批量删除用户信息
+     */
+    @DeleteMapping("/deleteBatch")
+    @Operation(summary = "批量删除用户信息")
+    public ResponseResult<String> deleteUserBatch(@RequestBody List<String> cIdList) {
+        try {
+            // 1、先查询是否存在（幂等验证）
+            List<User> userList = userService.listByIds(cIdList);
+            if (userList.size() != cIdList.size()) {
+                return ResponseResult.failure(ResultEnum.NOT_FOUND.getCode(), "用户不存在");
+            }
+            // 2、删除
+            String isSuccess = String.valueOf(userService.removeByIds(cIdList));
+            return ResponseResult.success(isSuccess, "删除成功");
+        } catch (Exception e) {
+            logger.error("批量删除用户信息失败", e);
+            return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
+        }
+    }
 }
