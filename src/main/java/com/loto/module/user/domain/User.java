@@ -1,5 +1,6 @@
 package com.loto.module.user.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -26,9 +27,9 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * UUID主键
+     * UUID主键 - 新增自动生成
      */
-    @TableId("C_ID")
+    @TableId(type = IdType.ASSIGN_UUID, value = "C_ID")
     @Schema(description = "UUID主键")
     private String cId;
 
@@ -129,10 +130,10 @@ public class User implements Serializable {
     private Date cLastActive;
 
     /**
-     * 入职年份
+     * 入职年份（数据库类型 YEAR）
      */
     @Schema(description = "入职年份")
-    private Date cYear;
+    private Integer cYear;
 
     /**
      * 头像图片

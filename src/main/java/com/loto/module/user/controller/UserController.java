@@ -1,6 +1,7 @@
 package com.loto.module.user.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.loto.common.enums.ResultEnum;
 import com.loto.common.response.ResponseResult;
 import com.loto.module.user.domain.User;
 import com.loto.module.user.service.IUserService;
@@ -46,7 +47,7 @@ public class UserController {
             return ResponseResult.success(list);
         } catch (Exception e) {
             logger.error("查询全部用户信息列表失败", e);
-            return ResponseResult.failure(60001, "业务异常");
+            return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
         }
     }
 
@@ -67,7 +68,7 @@ public class UserController {
             return ResponseResult.success(page);
         } catch (Exception e) {
             logger.error("分页查询用户信息列表失败", e);
-            return ResponseResult.failure(60001, "业务异常");
+            return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
         }
     }
 
@@ -82,7 +83,7 @@ public class UserController {
             return ResponseResult.success(list);
         } catch (Exception e) {
             logger.error("根据条件查询用户信息列表失败", e);
-            return ResponseResult.failure(60001, "业务异常");
+            return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
         }
     }
 
@@ -102,7 +103,22 @@ public class UserController {
             return ResponseResult.success(page);
         } catch (Exception e) {
             logger.error("根据条件分页查询用户信息列表（排序）失败", e);
-            return ResponseResult.failure(60001, "业务异常");
+            return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
+        }
+    }
+
+    /**
+     * 用户管理 - 新增或修改用户信息
+     */
+    @PostMapping("/addOrUpdate")
+    @Operation(summary = "新增或修改用户信息")
+    public ResponseResult<String> addOrUpdateUser(@RequestBody User user) {
+        try {
+            String isSuccess = String.valueOf(userService.saveOrUpdate(user));
+            return ResponseResult.success(isSuccess, "保存成功");
+        } catch (Exception e) {
+            logger.error("新增或修改用户信息失败", e);
+            return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
         }
     }
 }

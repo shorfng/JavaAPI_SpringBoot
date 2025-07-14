@@ -38,8 +38,8 @@ CREATE TABLE t_user
     C_SIGNATURE   LONGBLOB COMMENT '电子签名',
 
     -- 枚举和集合类型
-    C_GENDER      ENUM ('MALE', 'FEMALE', 'OTHER') COMMENT '性别',
-    C_HOBBIES     SET ('READING', 'SPORTS', 'MUSIC', 'TRAVEL') COMMENT '兴趣爱好',
+    C_GENDER      ENUM ('男', '女', '其他') COMMENT '性别',
+    C_HOBBIES     SET ('阅读', '运动', '音乐', '旅游') COMMENT '兴趣爱好',
 
     -- 布尔类型
     C_IS_ACTIVE   BOOLEAN               DEFAULT TRUE COMMENT '是否活跃',
