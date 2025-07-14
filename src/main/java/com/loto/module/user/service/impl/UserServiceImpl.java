@@ -42,14 +42,6 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User> implements I
     }
 
     /**
-     * 用户管理 - 条件查询用户信息列表
-     */
-    @Override
-    public List<User> getUserListByCondition(User user) {
-        return this.list(new QueryWrapper<>(user));
-    }
-
-    /**
      * 用户管理 - 条件分页查询用户信息列表（排序）
      */
     @Override
@@ -63,6 +55,17 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User> implements I
         return baseMapper.selectPage(page, queryWrapper); // 调用 MyBatis Plus 内置分页方法
     }
 
+    /**
+     * 用户管理 - 条件查询用户信息列表
+     */
+    @Override
+    public List<User> getUserListByCondition(User user) {
+        return this.list(new QueryWrapper<>(user));
+    }
+
+    /**
+     * 用户管理 - 根据 userName 查询用户信息（返回 UserDTO）
+     */
     @Override
     public UserDTO getUserByUserName(String userName) {
         // 创建查询条件，查询

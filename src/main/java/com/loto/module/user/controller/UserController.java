@@ -76,21 +76,6 @@ public class UserController {
     }
 
     /**
-     * 用户管理 - 根据条件查询用户信息列表
-     */
-    @PostMapping("/listByCondition")
-    @Operation(summary = "根据条件查询用户信息列表")
-    public ResponseResult<List<User>> getUserListByCondition(@RequestBody User user) {
-        try {
-            List<User> list = userService.getUserListByCondition(user);
-            return ResponseResult.success(list);
-        } catch (Exception e) {
-            logger.error("根据条件查询用户信息列表失败", e);
-            return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
-        }
-    }
-
-    /**
      * 用户管理 - 根据条件分页查询用户信息列表（排序）
      */
     @PostMapping("/pageByCondition")
@@ -106,6 +91,21 @@ public class UserController {
             return ResponseResult.success(page);
         } catch (Exception e) {
             logger.error("根据条件分页查询用户信息列表（排序）失败", e);
+            return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
+        }
+    }
+
+    /**
+     * 用户管理 - 根据条件查询用户信息列表
+     */
+    @PostMapping("/listByCondition")
+    @Operation(summary = "根据条件查询用户信息列表")
+    public ResponseResult<List<User>> getUserListByCondition(@RequestBody User user) {
+        try {
+            List<User> list = userService.getUserListByCondition(user);
+            return ResponseResult.success(list);
+        } catch (Exception e) {
+            logger.error("根据条件查询用户信息列表失败", e);
             return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
         }
     }

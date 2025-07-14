@@ -25,17 +25,17 @@ public interface IUserService extends IService<User> {
     IPage<User> getUserPage(int pageNum, int pageSize);
 
     /**
-     * 用户管理 - 根据条件查询用户信息列表
-     */
-    List<User> getUserListByCondition(User user);
-
-    /**
      * 用户管理 - 根据条件分页查询用户信息列表（排序）
      */
     IPage<User> getUserPageByCondition(int pageNum, int pageSize, String orderName, String orderValue, User user);
 
     /**
-     * 用户管理 - 用户管理 - 根据 userName 查询用户信息（返回 UserDTO）
+     * 用户管理 - 根据条件查询用户信息列表
+     */
+    List<User> getUserListByCondition(User user);
+
+    /**
+     * 用户管理 - 根据 userName 查询用户信息（返回 UserDTO）
      */
     UserDTO getUserByUserName(String userName);
 }
