@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.loto.common.enums.ResultEnum;
 import com.loto.common.response.ResponseResult;
 import com.loto.module.user.domain.User;
+import com.loto.module.user.dto.UserDTO;
 import com.loto.module.user.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -105,6 +106,21 @@ public class UserController {
             return ResponseResult.success(page);
         } catch (Exception e) {
             logger.error("根据条件分页查询用户信息列表（排序）失败", e);
+            return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
+        }
+    }
+
+    /**
+     * 用户管理 - 根据 userName 查询用户信息（返回 UserDTO）
+     */
+    @GetMapping("/getByUserName/{userName}")
+    @Operation(summary = "根据 userName 查询用户信息（返回 UserDTO）")
+    public ResponseResult<UserDTO> getUserByUserName(@PathVariable String userName) {
+        try {
+            UserDTO user = userService.getUserByUserName(userName);
+            return ResponseResult.success(user);
+        } catch (Exception e) {
+            logger.error("根据 userName 获取用户信息失败", e);
             return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常");
         }
     }

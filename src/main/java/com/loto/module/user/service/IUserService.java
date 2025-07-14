@@ -3,6 +3,7 @@ package com.loto.module.user.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.loto.module.user.domain.User;
+import com.loto.module.user.dto.UserDTO;
 
 import java.util.List;
 
@@ -32,4 +33,9 @@ public interface IUserService extends IService<User> {
      * 用户管理 - 根据条件分页查询用户信息列表（排序）
      */
     IPage<User> getUserPageByCondition(int pageNum, int pageSize, String orderName, String orderValue, User user);
+
+    /**
+     * 用户管理 - 用户管理 - 根据 userName 查询用户信息（返回 UserDTO）
+     */
+    UserDTO getUserByUserName(String userName);
 }

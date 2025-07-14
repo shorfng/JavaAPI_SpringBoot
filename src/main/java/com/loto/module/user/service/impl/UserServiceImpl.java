@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.loto.module.user.domain.User;
+import com.loto.module.user.dto.UserDTO;
 import com.loto.module.user.mapper.IUserMapper;
 import com.loto.module.user.service.IUserService;
 import org.springframework.stereotype.Service;
@@ -60,5 +61,21 @@ public class UserServiceImpl extends ServiceImpl<IUserMapper, User> implements I
             queryWrapper.orderBy(true, "asc".equalsIgnoreCase(orderValue), orderName);
         }
         return baseMapper.selectPage(page, queryWrapper); // 调用 MyBatis Plus 内置分页方法
+    }
+
+    @Override
+    public UserDTO getUserByUserName(String userName) {
+        // 创建查询条件，查询
+        QueryWrapper<User> queryWrapper = new QueryWrapper<User>().eq("C_USERNAME", userName);
+        List<User> userList = baseMapper.selectList(queryWrapper);
+        // 判断查询结果
+        if (userList != null && !userList.isEmpty()) {
+            return UserDTO.builder()
+                    .userName(userName)
+                    .userList(userList)
+                    .build();
+        } else {
+            return null;
+        }
     }
 }
