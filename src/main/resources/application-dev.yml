@@ -113,7 +113,7 @@ logging:
 
 web-client-url:
   order-list-by-id-url: http://127.0.0.1:4523/m1/6737648-6448932-default/api/order/getOrderListById/
-  order-list-page-url: http://localhost:8080/order/listPage
+  order-list-page-url: http://127.0.0.1:4523/m1/6737648-6448932-default/api/order/listPage/
 
 # 跨域配置 - 白名单
 cors:

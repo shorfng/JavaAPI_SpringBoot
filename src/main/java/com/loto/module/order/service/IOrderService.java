@@ -1,7 +1,9 @@
 package com.loto.module.order.service;
 
 import com.loto.module.order.dto.request.OrderListByIdRequest;
+import com.loto.module.order.dto.request.OrderListPageRequest;
 import com.loto.module.order.dto.response.OrderListByIdResponse;
+import com.loto.module.order.dto.response.OrderListPageResponse;
 import reactor.core.publisher.Mono;
 
 /**
@@ -15,4 +17,9 @@ public interface IOrderService {
      * 订单管理 - 获取订单列表
      */
     Mono<OrderListByIdResponse>  getOrderListById(OrderListByIdRequest request);
+
+    /**
+     * 订单管理 - 分页查询订单列表
+     */
+    Mono<OrderListPageResponse>getOrderListPage(OrderListPageRequest request);
 }
