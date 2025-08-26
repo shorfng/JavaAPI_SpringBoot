@@ -60,13 +60,6 @@ spring:
 #            max-lifetime: 1800000      # 连接的最大生命周期（毫秒）
 #            connection-timeout: 30000  # 获取连接的超时时间（毫秒）
 
-# Jackson 配置
-  jackson:
-    date-format: yyyy-MM-dd HH:mm:ss   # 日期格式模板
-    time-zone: Asia/Shanghai           # 时区设定
-    serialization:
-      write-dates-as-timestamps: false # 关闭时间戳输出
-
 # springdoc-openapi项目配置
 springdoc:
   # Swagger UI 基础配置
