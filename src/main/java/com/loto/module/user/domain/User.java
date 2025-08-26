@@ -3,6 +3,7 @@ package com.loto.module.user.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -115,18 +116,21 @@ public class User implements Serializable {
      * 生日
      */
     @Schema(description = "生日")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date cBirthday;
 
     /**
      * 最后登录时间
      */
     @Schema(description = "最后登录时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date cLoginTime;
 
     /**
      * 最后活跃时间戳
      */
     @Schema(description = "最后活跃时间戳")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date cLastActive;
 
     /**
@@ -175,6 +179,7 @@ public class User implements Serializable {
      * 创建时间
      */
     @Schema(description = "创建时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date cCreateTime;
 
     /**
@@ -187,6 +192,7 @@ public class User implements Serializable {
      * 修改时间
      */
     @Schema(description = "修改时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date cUpdateTime;
 
     /**
