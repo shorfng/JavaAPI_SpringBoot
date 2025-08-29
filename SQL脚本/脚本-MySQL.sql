@@ -57,3 +57,44 @@ CREATE TABLE t_user
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_unicode_ci COMMENT ='用户表';
+
+CREATE TABLE t_business
+(
+    -- 业务主键字段（复合主键）
+    C_ORDER_NO       VARCHAR(30) NOT NULL COMMENT '订单编号(业务唯一标识)',
+    C_BUSINESS_TYPE  VARCHAR(20) NOT NULL COMMENT '业务类型(如:销售/采购/退货)',
+    C_REGION_CODE    CHAR(6)     NOT NULL COMMENT '区域代码(行政区划编码)',
+
+    -- 业务相关字段
+    C_CUSTOMER_ID    VARCHAR(36) COMMENT '客户ID',
+    C_SUPPLIER_ID    VARCHAR(36) COMMENT '供应商ID',
+    C_PRODUCT_CODE   VARCHAR(50) COMMENT '产品编码',
+    C_QUANTITY       INT COMMENT '数量',
+    C_UNIT_PRICE     DECIMAL(12, 2) COMMENT '单价',
+    C_TOTAL_AMOUNT   DECIMAL(14, 2) COMMENT '总金额',
+    C_CURRENCY       CHAR(3)              DEFAULT 'CNY' COMMENT '币种',
+    C_ORDER_STATUS   VARCHAR(20) COMMENT '订单状态',
+    C_PAYMENT_METHOD VARCHAR(20) COMMENT '支付方式',
+    C_DELIVERY_DATE  DATE COMMENT '预计交付日期',
+
+    -- 审批相关字段
+    C_APPROVER       VARCHAR(50) COMMENT '审批人',
+    C_APPROVE_TIME   DATETIME COMMENT '审批时间',
+    C_APPROVE_STATUS TINYINT COMMENT '审批状态(0-未审批,1-已通过,2-已拒绝)',
+
+    -- 备注信息
+    C_REMARKS        TEXT COMMENT '备注信息',
+
+    -- 系统字段
+    C_CREATE_TIME    DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    C_CREATE_USER    VARCHAR(50) NOT NULL COMMENT '创建人',
+    C_UPDATE_TIME    DATETIME ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    C_UPDATE_USER    VARCHAR(50) COMMENT '修改人',
+    C_VERSION        INT                  DEFAULT 1 COMMENT '版本号(用于乐观锁)',
+    C_IS_DELETED     TINYINT(1)           DEFAULT 0 COMMENT '是否删除(0-未删除,1-已删除)',
+
+    -- 设置复合主键
+    PRIMARY KEY (C_ORDER_NO, C_BUSINESS_TYPE, C_REGION_CODE)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_unicode_ci COMMENT ='业务订单表';
