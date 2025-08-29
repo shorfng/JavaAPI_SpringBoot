@@ -5,9 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -19,9 +17,7 @@ import java.util.Date;
  * 功能描述：实体类 - 用户表<p>
  * 创建人：蓝田_Loto
  */
-@Getter
-@Setter
-@ToString
+@Data
 @TableName("t_user")
 @Schema(name = "User", description = "用户表")
 public class User implements Serializable {
