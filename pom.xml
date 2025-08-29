@@ -116,18 +116,11 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- MyBatis Spring Boot Starter依赖 -->
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-
-        <!-- MyBatis Plus 核心启动器 -->
+        <!-- MyBatis Plus -->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>3.5.5</version>
+            <version>3.5.7</version>
         </dependency>
 
         <!-- MyBatis Plus 多数据源的动态切换 -->
@@ -138,9 +131,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>3.5.5</version>
+            <groupId>com.github.jeffreyning</groupId>
+            <artifactId>mybatisplus-plus</artifactId>
+            <version>1.7.5-RELEASE</version>
         </dependency>
 
         <!-- springdoc-openapi,兼容OpenAPI3规范，兼容 Spring Boot 2.7.x -->
