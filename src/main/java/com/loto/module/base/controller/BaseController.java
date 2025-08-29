@@ -1,6 +1,8 @@
 package com.loto.module.base.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.TableInfo;
+import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.loto.common.enums.ResultEnum;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
@@ -98,14 +102,49 @@ public class BaseController<S extends IService<E>, E> {
      * @param entity 实体类
      */
     @PostMapping("/save")
-    @Operation(summary = "新增")
+    @Operation(summary = "新增（不建议用）")
     public ResponseResult<String> save(@RequestBody E entity) {
         try {
-            // 参数验证
+            // 1、参数验证
             if (entity == null) {
                 return ResponseResult.failure(ResultEnum.BAD_REQUEST.getCode(), "参数不能为空");
             }
-            // 新增
+            // 2、根据主键查询数据是否存在
+            // 获取实体类对应的表信息
+            TableInfo tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
+            // 判断表信息是否存在
+            if (tableInfo != null) {
+                // 获取主键列名
+                String pkColumn = tableInfo.getKeyColumn();
+                // 判断主键列是否存在
+                if (pkColumn != null) {
+                    // 获取主键属性名
+                    String keyProperty = tableInfo.getKeyProperty();
+                    // 使用PropertyDescriptor创建属性描述符，用于访问主键属性
+                    PropertyDescriptor pd = new PropertyDescriptor(keyProperty, entity.getClass());
+                    // 获取主键属性的getter方法
+                    Method getter = pd.getReadMethod();
+                    // 调用getter方法获取主键值
+                    Object keyValue = getter.invoke(entity);
+                    // 判断主键值是否为空
+                    if (keyValue != null) {
+                        // 构造只根据主键查询的条件
+                        QueryWrapper<E> queryWrapper = new QueryWrapper<>();
+                        // 设置查询条件：主键列等于主键值
+                        queryWrapper.eq(pkColumn, keyValue);
+                        // 根据查询条件获取实体对象
+                        E e = baseService.getOne(queryWrapper);
+                        // 判断查询结果是否存在
+                        if (e != null) {
+                            // 数据存在，则更新
+                            baseService.updateById(entity);
+                            // 返回更新成功的响应结果
+                            return ResponseResult.success(String.valueOf(ResultEnum.CREATED.getCode()), "根据主键查询到重复数据，更新成功！");
+                        }
+                    }
+                }
+            }
+            // 3、根据主键查询数据不存在，则新增
             baseService.save(entity);
             return ResponseResult.success(String.valueOf(ResultEnum.CREATED.getCode()), "新增成功！");
         } catch (Exception e) {
@@ -165,16 +204,48 @@ public class BaseController<S extends IService<E>, E> {
      * @param entity 实体类
      */
     @PostMapping("/updateById")
-    @Operation(summary = "修改 - 根据ID修改")
+    @Operation(summary = "修改 - 根据ID修改（不建议用）")
     public ResponseResult<String> updateById(@RequestBody E entity) {
         try {
             // 参数校验
             if (entity == null) {
                 return ResponseResult.failure(ResultEnum.BAD_REQUEST.getCode(), "参数不能为空");
             }
-            // 根据ID修改
-            baseService.updateById(entity);
-            return ResponseResult.success(String.valueOf(ResultEnum.SUCCESS.getCode()), "根据ID修改成功！");
+            // 获取实体类对应的表信息
+            TableInfo tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
+            // 判断表信息是否存在
+            if (tableInfo != null) {
+                // 获取主键列名
+                String pkColumn = tableInfo.getKeyColumn();
+                // 判断主键列是否存在
+                if (pkColumn != null) {
+                    // 获取主键属性名
+                    String keyProperty = tableInfo.getKeyProperty();
+                    // 使用PropertyDescriptor创建属性描述符，用于访问主键属性
+                    PropertyDescriptor pd = new PropertyDescriptor(keyProperty, entity.getClass());
+                    // 获取主键属性的getter方法
+                    Method getter = pd.getReadMethod();
+                    // 调用getter方法获取主键值
+                    Object keyValue = getter.invoke(entity);
+                    // 判断主键值是否为空
+                    if (keyValue != null) {
+                        // 构造只根据主键查询的条件
+                        QueryWrapper<E> queryWrapper = new QueryWrapper<>();
+                        // 设置查询条件：主键列等于主键值
+                        queryWrapper.eq(pkColumn, keyValue);
+                        // 检查修改的数据是否存在
+                        E e = baseService.getOne(queryWrapper);
+                        if (e != null) {
+                            // 根据ID修改
+                            baseService.updateById(entity);
+                            return ResponseResult.success(String.valueOf(ResultEnum.SUCCESS.getCode()), "根据ID修改成功！");
+                        }
+                    }
+                }
+            }
+            // 修改的数据不存在
+            logger.error("根据ID修改失败，实体: {}", entity);
+            return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常，根据ID修改失败: 找不到数据！");
         } catch (Exception e) {
             logger.error("根据ID修改失败，实体: {}", entity, e);
             return ResponseResult.failure(ResultEnum.BUSINESS_ERROR.getCode(), "业务异常，根据ID修改失败: " + e.getMessage());
@@ -210,7 +281,7 @@ public class BaseController<S extends IService<E>, E> {
     @PostMapping("/deleteByIds")
     @Operation(summary = "删除 - 根据Ids删除")
     @Transactional(rollbackFor = Exception.class)
-    public ResponseResult<String> deleteByIds(@RequestBody List<Integer> ids) {
+    public ResponseResult<String> deleteByIds(@RequestBody List<String> ids) {
         try {
             // 参数校验
             if (ids == null || ids.isEmpty()) {
